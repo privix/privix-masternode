@@ -1,14 +1,14 @@
 #!/bin/bash
 
-TMP_FOLDER=$(mktemp -d)
-CONFIG_FILE='privix.conf'
-CONFIGFOLDER='/root/.privix'
-COIN_DAEMON='privixd'
-COIN_CLI='privix-cli'
-COIN_PATH='/usr/local/bin/'
-COIN_TGZ='#'
-COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
 COIN_NAME='privix'
+TMP_FOLDER=$(mktemp -d)
+CONFIG_FILE="${COIN_NAME}.conf"
+CONFIGFOLDER='/root/.privix'
+COIN_DAEMON="${COIN_NAME}d"
+COIN_CLI="${COIN_NAME}-cli"
+COIN_PATH='/usr/local/bin/'
+COIN_TGZ='curl -s https://api.github.com/repos/privix/privix-core/releases/latest | grep browser_download_url | grep ubuntu | cut -d '"' -f 4'
+COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
 COIN_PORT=7788
 RPC_PORT=7789
 
@@ -41,7 +41,7 @@ User=root
 Group=root
 Type=forking
 #PIDFile=$CONFIGFOLDER/$COIN_NAME.pid
-ExecStart=$COIN_PATH$COIN_DAEMON -daemon -prune=100 -conf=$CONFIGFOLDER/$CONFIG_FILE -datadir=$CONFIGFOLDER
+ExecStart=$COIN_PATH$COIN_DAEMON -daemon -conf=$CONFIGFOLDER/$CONFIG_FILE -datadir=$CONFIGFOLDER
 ExecStop=-$COIN_PATH$COIN_CLI -conf=$CONFIGFOLDER/$CONFIG_FILE -datadir=$CONFIGFOLDER stop
 Restart=always
 PrivateTmp=true
