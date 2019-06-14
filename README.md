@@ -5,7 +5,8 @@ A handy bash script to setup masternode in no time on a VPS with Ubuntu 16.04 x6
 
 ## VPS installation for version **1.0.0.0**
 ```
-wget -N https://raw.githubusercontent.com/privix/privix-masternode/master/masternode.sh && bash masternode.sh
+wget -N https://raw.githubusercontent.com/privix/privix-masternode/master/masternode.sh
+bash masternode.sh
 ```
 ***
 
