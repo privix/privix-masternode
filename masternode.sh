@@ -8,7 +8,7 @@ COIN_DAEMON="${COIN_NAME}d"
 COIN_CLI="${COIN_NAME}-cli"
 COIN_PATH='/usr/local/bin/'
 #COIN_TGZ='curl -s https://api.github.com/repos/privix/privix-core/releases/latest | grep browser_download_url | grep node | cut -d '"' -f 4'
-COIN_TGZ='https://github.com/privix/privix-core/releases/download/v1.0.0.0/privix-1.0.0.0-node.tar.gz'
+COIN_TGZ='https://github.com/MotoAcidic/privix-core/releases/download/2.0.0.0/PRIVIX-linux.tar.gz'
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
 COIN_PORT=7788
 RPC_PORT=7789
@@ -234,7 +234,6 @@ function important_information() {
 function setup_node() {
   get_ip
   create_config
-  sync_node
   create_key
   update_config
   enable_firewall
