@@ -7,8 +7,8 @@ CONFIGFOLDER='/root/.privix'
 COIN_DAEMON="${COIN_NAME}d"
 COIN_CLI="${COIN_NAME}-cli"
 COIN_PATH='/usr/local/bin/'
-#COIN_TGZ='curl -s https://api.github.com/repos/privix/privix-core/releases/latest | grep browser_download_url | grep node | cut -d '"' -f 4'
 COIN_TGZ='https://github.com/privix/privix-core/releases/download/v2.0.0.1/privix-2.0.0.1-ubuntu1604.tar.gz'
+COIN_BLOCKS='https://github.com/privix/privix-core/releases/download/v2.0.0.1/bootstrap.zip'
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
 COIN_PORT=7788
 RPC_PORT=7789
@@ -19,6 +19,15 @@ NODEIP=$(curl -s4 icanhazip.com)
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
+
+function sync_node() {
+  cd $CONFIGFOLDER
+  rm -r {peers.dat,chainstate,blocks}
+  wget -q $COIN_BLOCKS -O bootstrap.zip
+  unzip -q bootstrap.zip
+  rm -r bootstrap.zip
+  cd - >/dev/null 2>&1
+}
 
 function download_node() {
   echo -e "Preparing to download ${GREEN}$COIN_NAME${NC}."
@@ -117,10 +126,77 @@ maxconnections=256
 masternode=1
 externalip=$NODEIP:$COIN_PORT
 masternodeprivkey=$COINKEY
-#privix addnodes
-addnode=8.9.36.49
-addnode=140.82.48.162
-addnode=140.82.49.161
+# Privix VPX addnodes (https://explorer.masternodes.online/currencies/VPX/)
+addnode=104.238.128.174:7788
+addnode=136.244.85.91:7788
+addnode=140.82.0.81:49220
+addnode=140.82.50.81:39284
+addnode=140.82.50.81:39354
+addnode=140.82.50.81:39378
+addnode=140.82.50.81:42694
+addnode=140.82.50.81:57916
+addnode=140.82.50.81:58424
+addnode=140.82.50.81:58470
+addnode=144.202.111.125:44858
+addnode=144.202.111.125:45040
+addnode=144.202.111.125:45064
+addnode=144.202.111.125:49192
+addnode=144.202.111.125:49206
+addnode=144.202.111.125:49582
+addnode=144.202.111.125:51326
+addnode=144.202.111.125:51344
+addnode=144.202.111.125:51552
+addnode=144.202.111.125:56038
+addnode=144.202.111.125:56146
+addnode=144.202.111.125:56232
+addnode=144.202.111.125:56322
+addnode=144.202.17.166:37234
+addnode=144.202.80.225:7788
+addnode=149.28.195.252:35272
+addnode=149.28.195.252:40656
+addnode=149.28.195.252:42286
+addnode=149.28.195.252:51046
+addnode=149.28.195.252:51060
+addnode=149.28.195.252:51098
+addnode=149.28.195.252:7788
+addnode=149.28.203.230:56170
+addnode=149.28.203.230:58592
+addnode=165.22.70.82:7788
+addnode=165.227.31.115:33384
+addnode=167.71.121.100:7788
+addnode=167.86.89.63:7788
+addnode=188.166.162.7:7788
+addnode=207.154.240.169:7788
+addnode=209.250.243.35:7788
+addnode=45.32.133.67:37348
+addnode=45.32.133.67:40898
+addnode=45.32.133.67:40900
+addnode=45.32.133.67:43400
+addnode=45.32.133.67:47702
+addnode=45.32.133.67:47712
+addnode=45.32.148.173:53680
+addnode=45.63.85.68:39764
+addnode=45.63.85.68:39940
+addnode=45.63.85.68:58250
+addnode=45.63.85.68:58604
+addnode=45.63.85.68:7788
+addnode=45.76.139.144:7788
+addnode=45.77.0.241:33396
+addnode=45.77.0.241:33420
+addnode=45.77.0.241:33424
+addnode=45.77.0.241:34088
+addnode=45.77.0.241:35100
+addnode=45.77.0.241:35116
+addnode=45.77.0.241:43696
+addnode=45.77.1.164:39438
+addnode=45.77.1.164:52638
+addnode=45.77.1.164:7788
+addnode=78.141.209.38:7788
+addnode=8.9.11.178:7788
+addnode=84.17.53.82:59341
+addnode=93.174.24.133:25392
+addnode=95.179.166.75:7788
+addnode=95.179.188.94:45760
 EOF
 }
 
@@ -234,6 +310,7 @@ function important_information() {
 function setup_node() {
   get_ip
   create_config
+  sync_node
   create_key
   update_config
   enable_firewall
